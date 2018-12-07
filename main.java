@@ -4,211 +4,108 @@ public class main
 	public static int i; 
 	
 	public static int board[] = new int[16];
+	public static int moved[] = new int[16];
+	
+	public static void printmoves()
+	{
+		
+	}
+	public static void printboard()
+	{
+		System.out.println("    " + board[0]);
+		System.out.println("   " + board[1] + " " + board[2]);
+		System.out.println("  " + board[3] + " " + board[4] + " " + board[5]);
+		System.out.println(" " + board[6] + " " + board[7] + " " + board[8] + " " + board[9]);
+		System.out.println(board[10] + " " + board[11] + " " + board[12] + " " + board[13] + " " + board[14]);
+		System.out.println("");
+	}
+	
+	public static void printtboard(int[] tboard)
+	{
+		System.out.println("    " + tboard[0]);
+		System.out.println("   " + tboard[1] + " " + tboard[2]);
+		System.out.println("  " + tboard[3] + " " + tboard[4] + " " + tboard[5]);
+		System.out.println(" " + tboard[6] + " " + tboard[7] + " " + tboard[8] + " " + tboard[9]);
+		System.out.println(tboard[10] + " " + tboard[11] + " " + tboard[12] + " " + tboard[13] + " " + tboard[14]);
+		System.out.println("");
+	}
+	
+	public static int trymove(int pegsout,move nmove, int[] nboard,int cmove)
+	{
+		int[] tboard = nboard.clone();
+		int[] vmoves = new int[36];
+		int tried = 0;
+		tboard[nmove.to] = 1;
+		tboard[nmove.over] = 0;
+		tboard[nmove.from] = 0;
+		pegsout = pegsout + 1;
+		System.out.println("Move:  " + cmove + "\tOut: " + pegsout);
+//		printtboard(nboard);
+		printtboard(tboard);
+		for(i = 0; i < 36 ; i ++)
+		{
+			vmoves[i] = 0;
+		}
+		if(pegsout == 14)
+		{
+			return 1;
+		}
+		
+		for(i = 0 ; i < 36 ; i ++)
+		{
+			//Check if a move is valid
+			if(tboard[movelist.movelist[i].to] == 0 && tboard[movelist.movelist[i].over] == 1 && tboard[movelist.movelist[i].from] == 1)
+			{
+				vmoves[i] = 1;
+			}
+		}
+		
+		//Try all valid moves
+		for( i = 0; i < 36 ; i++)
+		{
+		if(vmoves[i] == 1)
+		{
+			tried = trymove(pegsout,movelist.movelist[i],tboard,i);
+			
+			if(tried == 1)
+			{
+				moved[pegsout] = i;
+				return 1;
+			}
+		}
+		tried = 0;
+		}
+
+		return 0;
+	}
 	
 	public static void main(String[] args)
 	{
 		movelist = new moves();
-		//for(i = 0 ; i < 35 ; i++)
-		//{
-		//	System.out.println(movelist.movelist[i].beg + " " + movelist.movelist[i].mid + " " + movelist.movelist[i].end);
-		//}
-		
-		for (i = 0 ; i < 16 ; i ++)
+		for(i = 1 ; i < 15 ; i++)
 		{
 			board[i] = 1;
+			moved[i] = -1;
 		}
+		printboard();
 		board[0] = 0;
-		System.out.println("    " + board[0]);
-		System.out.println("   " + board[1] + " " + board[2]);
-		System.out.println("  " + board[3] + " " + board[4] + " " + board[5]);
-		System.out.println(" " + board[6] + " " + board[7] + " " + board[8] + " " + board[9]);
-		System.out.println(board[10] + " " + board[11] + " " + board[12] + " " + board[13] + " " + board[14]);
-		System.out.println("");
-		
-		if(board[0] == 0 && board[1] == 1 && board[3] == 1)
-		{
-			board[0] = 1;
-			board[1] = 0;
-			board[3] = 0;
-		}
-		System.out.println("    " + board[0]);
-		System.out.println("   " + board[1] + " " + board[2]);
-		System.out.println("  " + board[3] + " " + board[4] + " " + board[5]);
-		System.out.println(" " + board[6] + " " + board[7] + " " + board[8] + " " + board[9]);
-		System.out.println(board[10] + " " + board[11] + " " + board[12] + " " + board[13] + " " + board[14]);
-		System.out.println("");
-		
-		if(board[3] == 0 && board[4] == 1 && board[5] == 1)
-		{
-			board[3] = 1;
-			board[4] = 0;
-			board[5] = 0;
-		}
-		System.out.println("    " + board[0]);
-		System.out.println("   " + board[1] + " " + board[2]);
-		System.out.println("  " + board[3] + " " + board[4] + " " + board[5]);
-		System.out.println(" " + board[6] + " " + board[7] + " " + board[8] + " " + board[9]);
-		System.out.println(board[10] + " " + board[11] + " " + board[12] + " " + board[13] + " " + board[14]);
-		System.out.println("");		
-		
-		if(board[5] == 0 && board[2] == 1 && board[0] == 1)
-		{
-			board[5] = 1;
-			board[2] = 0;
-			board[0] = 0;
-		}
-		System.out.println("    " + board[0]);
-		System.out.println("   " + board[1] + " " + board[2]);
-		System.out.println("  " + board[3] + " " + board[4] + " " + board[5]);
-		System.out.println(" " + board[6] + " " + board[7] + " " + board[8] + " " + board[9]);
-		System.out.println(board[10] + " " + board[11] + " " + board[12] + " " + board[13] + " " + board[14]);
-		System.out.println("");	
-		
-		if(board[1] == 0 && board[3] == 1 && board[6] == 1)
-		{
-			board[1] = 1;
-			board[3] = 0;
-			board[6] = 0;
-		}
-		System.out.println("    " + board[0]);
-		System.out.println("   " + board[1] + " " + board[2]);
-		System.out.println("  " + board[3] + " " + board[4] + " " + board[5]);
-		System.out.println(" " + board[6] + " " + board[7] + " " + board[8] + " " + board[9]);
-		System.out.println(board[10] + " " + board[11] + " " + board[12] + " " + board[13] + " " + board[14]);
-		System.out.println("");	
-		
-		if(board[3] == 0 && board[7] == 1 && board[12] == 1)
-		{
-			board[3] = 1;
-			board[7] = 0;
-			board[12] = 0;
-		}
-		System.out.println("    " + board[0]);
-		System.out.println("   " + board[1] + " " + board[2]);
-		System.out.println("  " + board[3] + " " + board[4] + " " + board[5]);
-		System.out.println(" " + board[6] + " " + board[7] + " " + board[8] + " " + board[9]);
-		System.out.println(board[10] + " " + board[11] + " " + board[12] + " " + board[13] + " " + board[14]);
-		System.out.println("");	
-		
-		
-		if(board[7] == 0 && board[8] == 1 && board[9] == 1)
-		{
-			board[7] = 1;
-			board[8] = 0;
-			board[9] = 0;
-		}
-		System.out.println("    " + board[0]);
-		System.out.println("   " + board[1] + " " + board[2]);
-		System.out.println("  " + board[3] + " " + board[4] + " " + board[5]);
-		System.out.println(" " + board[6] + " " + board[7] + " " + board[8] + " " + board[9]);
-		System.out.println(board[10] + " " + board[11] + " " + board[12] + " " + board[13] + " " + board[14]);
-		System.out.println("");	
-		
-		
-		if(board[6] == 0 && board[3] == 1 && board[1] == 1)
-		{
-			board[6] = 1;
-			board[3] = 0;
-			board[1] = 0;
-		}
-		System.out.println("    " + board[0]);
-		System.out.println("   " + board[1] + " " + board[2]);
-		System.out.println("  " + board[3] + " " + board[4] + " " + board[5]);
-		System.out.println(" " + board[6] + " " + board[7] + " " + board[8] + " " + board[9]);
-		System.out.println(board[10] + " " + board[11] + " " + board[12] + " " + board[13] + " " + board[14]);
-		System.out.println("");	
-		
-		if(board[8] == 0 && board[7] == 1 && board[6] == 1)
-		{
-			board[8] = 1;
-			board[7] = 0;
-			board[6] = 0;
-		}
-		System.out.println("    " + board[0]);
-		System.out.println("   " + board[1] + " " + board[2]);
-		System.out.println("  " + board[3] + " " + board[4] + " " + board[5]);
-		System.out.println(" " + board[6] + " " + board[7] + " " + board[8] + " " + board[9]);
-		System.out.println(board[10] + " " + board[11] + " " + board[12] + " " + board[13] + " " + board[14]);
-		System.out.println("");	
-		
-		if(board[12] == 0 && board[13] == 1 && board[14] == 1)
-		{
-			board[12] = 1;
-			board[13] = 0;
-			board[14] = 0;
-		}
-		System.out.println("    " + board[0]);
-		System.out.println("   " + board[1] + " " + board[2]);
-		System.out.println("  " + board[3] + " " + board[4] + " " + board[5]);
-		System.out.println(" " + board[6] + " " + board[7] + " " + board[8] + " " + board[9]);
-		System.out.println(board[10] + " " + board[11] + " " + board[12] + " " + board[13] + " " + board[14]);
-		System.out.println("");	
-		
-		if(board[13] == 0 && board[12] == 1 && board[11] == 1)
-		{
-			board[13] = 1;
-			board[12] = 0;
-			board[11] = 0;
-		}
-		System.out.println("    " + board[0]);
-		System.out.println("   " + board[1] + " " + board[2]);
-		System.out.println("  " + board[3] + " " + board[4] + " " + board[5]);
-		System.out.println(" " + board[6] + " " + board[7] + " " + board[8] + " " + board[9]);
-		System.out.println(board[10] + " " + board[11] + " " + board[12] + " " + board[13] + " " + board[14]);
-		System.out.println("");	
-		
-		if(board[12] == 0 && board[8] == 1 && board[5] == 1)
-		{
-			board[12] = 1;
-			board[5] = 0;
-			board[8] = 0;
-		}
-		System.out.println("    " + board[0]);
-		System.out.println("   " + board[1] + " " + board[2]);
-		System.out.println("  " + board[3] + " " + board[4] + " " + board[5]);
-		System.out.println(" " + board[6] + " " + board[7] + " " + board[8] + " " + board[9]);
-		System.out.println(board[10] + " " + board[11] + " " + board[12] + " " + board[13] + " " + board[14]);
-		System.out.println("");	
-		
-		if(board[11] == 0 && board[12] == 1 && board[13] == 1)
-		{
-			board[11] = 1;
-			board[12] = 0;
-			board[13] = 0;
-		}
-		System.out.println("    " + board[0]);
-		System.out.println("   " + board[1] + " " + board[2]);
-		System.out.println("  " + board[3] + " " + board[4] + " " + board[5]);
-		System.out.println(" " + board[6] + " " + board[7] + " " + board[8] + " " + board[9]);
-		System.out.println(board[10] + " " + board[11] + " " + board[12] + " " + board[13] + " " + board[14]);
-		System.out.println("");	
-		
-		if(board[12] == 0 && board[11] == 1 && board[10] == 1)
-		{
-			board[12] = 1;
-			board[11] = 0;
-			board[10] = 0;
-		}
-		System.out.println("    " + board[0]);
-		System.out.println("   " + board[1] + " " + board[2]);
-		System.out.println("  " + board[3] + " " + board[4] + " " + board[5]);
-		System.out.println(" " + board[6] + " " + board[7] + " " + board[8] + " " + board[9]);
-		System.out.println(board[10] + " " + board[11] + " " + board[12] + " " + board[13] + " " + board[14]);
-		System.out.println("");	
+		moved[0] = 0;
+		trymove(1,movelist.movelist[0],board,0);
+
 	}
 }
 
 class move
 {
-	int beg;
-	int mid;
-	int end;
+	int from;
+	int over;
+	int to;
 	
-	public move(int newbeg, int newmid, int newend)
+	public move(int nto, int nover, int nfrom)
 	{
-		this.beg = newbeg;
-		this.mid = newmid;
-		this.end = newend;
+		this.from = nfrom;
+		this.over = nover;
+		this.to = nto;
 	}
 }
 
